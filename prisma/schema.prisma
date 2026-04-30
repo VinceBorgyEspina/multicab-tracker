@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Multicab {
+  id          String   @id @default(uuid())
+  plateNumber String   @unique
+  driverName  String?
+  status      String   @default("Active") // Active, Maintenance
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  boundaries  Boundary[]
+  expenses    Expense[]
+  restDays    RestDay[]
+}
+
+model Boundary {
+  id         String   @id @default(uuid())
+  amount     Float
+  date       DateTime
+  type       String   @default("Daily") // Daily, Weekly
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  multicabId String
+  multicab   Multicab @relation(fields: [multicabId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  amount      Float
+  description String
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  multicabId  String
+  multicab    Multicab @relation(fields: [multicabId], references: [id], onDelete: Cascade)
+}
+
+model RestDay {
+  id         String   @id @default(uuid())
+  date       DateTime
+  reason     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  multicabId String
+  multicab   Multicab @relation(fields: [multicabId], references: [id], onDelete: Cascade)
+}
