@@ -15,14 +15,12 @@ export async function addMulticab(formData: FormData) {
   await prisma.multicab.create({
     data: { plateNumber, driverName }
   })
-  revalidatePath('/multicabs')
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
 }
 
 export async function deleteMulticab(id: string) {
   await prisma.multicab.delete({ where: { id } })
-  revalidatePath('/multicabs')
-  revalidatePath('/')
+  revalidatePath('/', 'layout')
 }
 
 // Boundaries
