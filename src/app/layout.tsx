@@ -15,6 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <div className="bg-glow bg-glow-1"></div>
+        <div className="bg-glow bg-glow-2"></div>
         <div className="app-container">
           <Sidebar />
           <main className="main-content">
